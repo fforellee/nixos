@@ -1,13 +1,9 @@
 # fforelle nixos config file
 { config, pkgs, ... }:
-let
-  home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/master.tar.gz";
-in
 {
   imports =
     [ 
       ./hardware-configuration.nix
-      (import "${home-manager}/nixos")
     ];
 
   boot.loader.systemd-boot.enable = true;      # Use the systemd-boot EFI boot loader.
@@ -65,11 +61,6 @@ in
     gimp
   ];
 
-  home-manager.users.fforelle = {
-    home.packages =[
-        pkgs.neovim
-    ];
-  };
   programs.ssh.askPassword = "";
 
   # Enable services
