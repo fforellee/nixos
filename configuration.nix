@@ -18,6 +18,7 @@
 
   
   services.xserver.enable = true; # Enable the X11 windowing system.
+  services.xserver.videoDrivers = [ "modesetting" ];
   services.xserver.windowManager.i3.enable = true;
   services.xserver.displayManager.startx.enable = true;
 
@@ -25,8 +26,8 @@
 		nerdfonts
 	      ];
 
-  # Enable sound.
-  sound.enable = true;
+  
+  sound.enable = true;  # Enable sound.
   hardware.pulseaudio.enable = true;
   
   environment.shells = [ pkgs.zsh ];
@@ -45,21 +46,24 @@
      zathura
      libvirt
      gimp
+     git
+     tcpdump
      tmux
      pavucontrol
+     virt-manager
+     virt-viewer
+     krita
+     gimp
+     ghc
+     home-manager
    ];
 
   # User specific configurations
-
   users.users.fforelle = {
      isNormalUser = true;
      initialPassword = "asdf";
      extraGroups = [ "wheel" ]; 
    };
-  users.users.fforelle.packages = with pkgs; [
-    krita
-    gimp
-  ];
 
   programs.ssh.askPassword = "";
 
