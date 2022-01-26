@@ -15,10 +15,9 @@
 
   networking.useDHCP = false;
   networking.interfaces.enp3s0.useDHCP = true;
-
   
   services.xserver.enable = true; # Enable the X11 windowing system.
-  services.xserver.videoDrivers = [ "modesetting" ];
+  services.xserver.videoDrivers = [ "intel" ];
   services.xserver.windowManager.i3.enable = true;
   services.xserver.displayManager.startx.enable = true;
 
@@ -29,8 +28,8 @@
   
   sound.enable = true;  # Enable sound.
   hardware.pulseaudio.enable = true;
-  
-  environment.shells = [ pkgs.zsh ];
+
+  users.defaultUserShell = pkgs.zsh;
 
   environment.systemPackages = with pkgs; [
      vim 
@@ -70,6 +69,8 @@
   # Enable services
   services.openssh.enable = true;
   services.emacs.enable = true;
+  virtualisation.libvirtd.enable = true;
+  virtualisation.libvirtd.qemu.ovmf.enable = true;
 
   system.stateVersion = "21.11"; # Nixos installation version
 }
