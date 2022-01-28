@@ -32,6 +32,7 @@
   users.defaultUserShell = pkgs.zsh;
 
   environment.systemPackages = with pkgs; [
+     nvim 
      vim 
      wget
      firefox
