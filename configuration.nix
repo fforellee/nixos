@@ -30,9 +30,11 @@
   hardware.pulseaudio.enable = true;
 
   users.defaultUserShell = pkgs.zsh;
-
+  nixpkgs.config = {
+     allowUnfree = true;
+  };
   environment.systemPackages = with pkgs; [
-     nvim 
+     neovim 
      vim 
      wget
      firefox
@@ -57,6 +59,7 @@
      ghc
      home-manager
      python
+     discord
    ];
 
   # User specific configurations
