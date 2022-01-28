@@ -55,6 +55,7 @@
      gimp
      ghc
      home-manager
+     python
    ];
 
   # User specific configurations
