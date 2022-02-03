@@ -30,9 +30,12 @@
   hardware.pulseaudio.enable = true;
 
   users.defaultUserShell = pkgs.zsh;
+  
+  #Allow unfree packages 
   nixpkgs.config = {
      allowUnfree = true;
   };
+
   environment.systemPackages = with pkgs; [
      neovim 
      vim 
@@ -60,6 +63,9 @@
      home-manager
      python
      discord
+     cabal-install
+     sqlite
+     melpaPackages.pdf-tools 
    ];
 
   # User specific configurations
