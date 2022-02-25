@@ -65,8 +65,10 @@
      discord
      cabal-install
      sqlite
-     melpaPackages.pdf-tools 
-   ];
+     python.pkgs.pip
+     youtube-dl
+     docker
+];
 
   # User specific configurations
   users.users.fforelle = {
