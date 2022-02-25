@@ -77,6 +77,11 @@
      extraGroups = [ "wheel" ]; 
    };
 
+  # Virtualizaiton configuration 
+  users.users.fforelle.extraGroups = ["libvirtd"];
+  virtualisation.libvirtd.enable = true;
+  programs.dconf.enable = true;
+
   programs.ssh.askPassword = "";
 
   # Enable services
