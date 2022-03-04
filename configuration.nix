@@ -11,7 +11,7 @@
   networking.hostName = "fforelle";     # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   
-  time.timeZone = "Europe/Amsterdam"; # Set your time zone.
+  time.timeZone = "America/SaoPaulo"; # Set your time zone.
 
   networking.useDHCP = false;
   networking.interfaces.enp3s0.useDHCP = true;
@@ -24,6 +24,9 @@
   fonts.fonts = with pkgs; [
 		nerdfonts
 	      ];
+  services.xserver = {
+  layout = "us,br";
+  };
 
   
   sound.enable = true;  # Enable sound.
@@ -68,27 +71,26 @@
      python.pkgs.pip
      youtube-dl
      docker
+     polybar
 ];
 
   # User specific configurations
   users.users.fforelle = {
      isNormalUser = true;
      initialPassword = "asdf";
-     extraGroups = [ "wheel" ]; 
+     extraGroups = [ "wheel" "libvirtd" ]; 
    };
 
-  # Virtualizaiton configuration 
-  users.users.fforelle.extraGroups = ["libvirtd"];
-  virtualisation.libvirtd.enable = true;
-  programs.dconf.enable = true;
 
   programs.ssh.askPassword = "";
 
   # Enable services
   services.openssh.enable = true;
   services.emacs.enable = true;
+  # Virtualizaiton configuration 
   virtualisation.libvirtd.enable = true;
   virtualisation.libvirtd.qemu.ovmf.enable = true;
+  programs.dconf.enable = true;
 
   system.stateVersion = "21.11"; # Nixos installation version
 }
