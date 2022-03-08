@@ -72,6 +72,7 @@
      youtube-dl
      docker
      polybar
+     php
 ];
 
   # User specific configurations
@@ -85,6 +86,18 @@
   programs.ssh.askPassword = "";
 
   # Enable services
+  #http
+  services.httpd = {
+    enable= true;
+    enablePHP= true;
+    adminAddr = "icaro.onofre.s@gmail.com";
+  };
+  #MySql
+  services.mysql = {
+    enable = true;
+    package = pkgs.mariadb;
+  };
+
   services.openssh.enable = true;
   services.emacs.enable = true;
   # Virtualizaiton configuration 
