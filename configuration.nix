@@ -98,6 +98,8 @@
     enable = true;
     package = pkgs.mariadb;
   };
+  #Mongodb
+  services.mongodb.enable = true;
 
   services.openssh.enable = true;
   services.emacs.enable = true;
