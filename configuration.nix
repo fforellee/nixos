@@ -73,6 +73,7 @@
      docker
      polybar
      php
+     wireshark
 ];
 
   # User specific configurations
