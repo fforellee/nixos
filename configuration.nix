@@ -1,5 +1,12 @@
 # fforelle nixos config file
 { config, pkgs, ... }:
+let
+  tex = (pkgs.texlive.combine {
+    inherit (pkgs.texlive) scheme-basic
+      dvisvgm dvipng # for preview and export as html
+      wrapfig amsmath ulem hyperref capt-of;
+  });
+in
 {
   imports =
     [ 
@@ -26,6 +33,7 @@
 	      ];
   services.xserver = {
   layout = "us,br";
+  xkbOptions = "grp:win_space_toggle";
   };
 
   
@@ -74,6 +82,8 @@
      polybar
      php
      wireshark
+     tex
+     nmap
 ];
 
   # User specific configurations
@@ -83,6 +93,15 @@
      extraGroups = [ "wheel" "libvirtd" ]; 
    };
 
+  environment.variables.EDITOR = "nvim";
+    nixpkgs.overlays = [
+    (self: super: {
+        neovim = super.neovim.override {
+        viAlias = true;
+        vimAlias = true;
+        };
+    })
+    ];
 
   programs.ssh.askPassword = "";
 
