@@ -6,6 +6,12 @@ let
       dvisvgm dvipng # for preview and export as html
       wrapfig amsmath ulem hyperref capt-of;
   });
+
+  myPhp = pkgs.php.buildEnv {
+    extensions = { all, ... }: with all; [ sqlsrv pdo_sqlsrv ];
+    extraConfig = "memory_limit=256M";
+  };
+
 in
 {
   imports =
@@ -20,6 +26,7 @@ in
   
   time.timeZone = "America/SaoPaulo"; # Set your time zone.
 
+
   networking.useDHCP = false;
   networking.interfaces.enp3s0.useDHCP = true;
   
@@ -30,10 +37,10 @@ in
 
   fonts.fonts = with pkgs; [
 		nerdfonts
-	      ];
+	];
   services.xserver = {
-  layout = "us,br";
-  xkbOptions = "grp:win_space_toggle";
+    layout = "us,br";
+    xkbOptions = "grp:win_space_toggle";
   };
 
   
@@ -44,74 +51,100 @@ in
   
   #Allow unfree packages 
   nixpkgs.config = {
-     allowUnfree = true;
+    allowUnfree = true;
   };
 
-  environment.systemPackages = with pkgs; [
-     neovim 
-     vim 
-     wget
-     firefox
-     emacs
-     i3
-     alacritty
-     zsh
-     virtmanager
-     qemu
-     OVMF
-     zathura
-     libvirt
-     gimp
-     git
-     tcpdump
-     tmux
-     pavucontrol
-     virt-manager
-     virt-viewer
-     krita
-     gimp
-     ghc
-     home-manager
-     python
-     discord
-     cabal-install
-     sqlite
-     python.pkgs.pip
-     youtube-dl
-     docker
-     polybar
-     php
-     wireshark
-     tex
-     nmap
-];
-
-  # User specific configurations
-  users.users.fforelle = {
-     isNormalUser = true;
-     initialPassword = "asdf";
-     extraGroups = [ "wheel" "libvirtd" ]; 
-   };
+  environment.systemPackages = with pkgs;
+    [
+      neovim 
+      vim 
+      wget
+      firefox
+      emacs
+      i3
+      alacritty
+      zsh
+      virtmanager
+      qemu
+      OVMF
+      zathura
+      libvirt
+      gimp
+      git
+      tcpdump
+      tmux
+      pavucontrol
+      virt-manager
+      virt-viewer
+      krita
+      gimp
+      ghc
+      home-manager
+      python
+      discord
+      cabal-install
+      sqlite
+      python.pkgs.pip
+      youtube-dl
+      docker
+      polybar
+      php
+      wireshark
+      tex
+      nmap
+      polybar
+      gcc
+      colorls
+      stdenv
+      gnumake
+    ];
+    # User specific configurations
+    users.users.fforelle = {
+    isNormalUser = true;
+    initialPassword = "asdf";
+    extraGroups = [ "wheel" "libvirtd" ]; 
+  };
 
   environment.variables.EDITOR = "nvim";
-    nixpkgs.overlays = [
+  nixpkgs.overlays = [
     (self: super: {
-        neovim = super.neovim.override {
+      neovim = super.neovim.override {
         viAlias = true;
         vimAlias = true;
-        };
+      };
     })
-    ];
+  ];
 
   programs.ssh.askPassword = "";
 
   # Enable services
+  #php
+
+  services.phpfpm.phpOptions = ''
+    extension=${pkgs.phpPackages.pdo_sqlsrv}/development/php-packages/pdo_sqlsrv
+  '';
+
   #http
-  services.httpd = {
-    enable= true;
-    enablePHP= true;
-    adminAddr = "icaro.onofre.s@gmail.com";
-  };
+  services.httpd =
+    {
+      user = "fforelle";
+      enable = true;
+      adminAddr = "icaro.onofre.s@gmail.com";
+
+      extraModules =
+        [
+          "http2"
+        ];
+      enablePHP = true;
+
+      virtualHosts =
+        {
+          localhost = {
+            documentRoot = "/home/fadhli/www";
+          };
+        };
+    };
+
   #MySql
   services.mysql = {
     enable = true;
@@ -119,7 +152,10 @@ in
   };
   #Mongodb
   services.mongodb.enable = true;
-
+  #Tor service
+  services.tor.tsocks.enable = true;
+  services.tor.enable = true;
+  services.tor.client.enable = true;
   services.openssh.enable = true;
   services.emacs.enable = true;
   # Virtualizaiton configuration 
