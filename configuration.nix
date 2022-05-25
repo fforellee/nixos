@@ -1,6 +1,7 @@
 # fforelle nixos config file
 { config, pkgs, ... }:
 let
+  home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/master.tar.gz";
   tex = (pkgs.texlive.combine {
     inherit (pkgs.texlive) scheme-basic
       dvisvgm dvipng # for preview and export as html
@@ -11,11 +12,13 @@ let
     extensions = { all, ... }: with all; [ sqlsrv pdo_sqlsrv ];
     extraConfig = "memory_limit=256M";
   };
+  #home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/master.tar.gz";
 
 in
 {
   imports =
     [ 
+      (import "${home-manager}/nixos")
       ./hardware-configuration.nix
     ];
 
@@ -54,6 +57,55 @@ in
     allowUnfree = true;
   };
 
+  #Home manager
+   # home-manager.users.fforelle = {
+   #   home.packages = [
+   #    pkgs.fzf
+   #    pkgs.neovim 
+   #    pkgs.vim 
+   #    pkgs.wget
+   #    pkgs.firefox
+   #    pkgs.emacs
+   #    pkgs.i3
+   #    pkgs.alacritty
+   #    pkgs.zsh
+   #    pkgs.virtmanager
+   #    pkgs.qemu
+   #    pkgs.qemu-system-gui
+   #    pkgs.OVMF
+   #    pkgs.zathura
+   #    pkgs.libvirt
+   #    pkgs.gimp
+   #    pkgs.git
+   #    pkgs.tcpdump
+   #    pkgs.tmux
+   #    pkgs.pavucontrol
+   #    pkgs.virt-manager
+   #    pkgs.virt-viewer
+   #    pkgs.krita
+   #    pkgs.gimp
+   #    pkgs.ghc
+   #    pkgs.python
+   #    pkgs.discord
+   #    pkgs.cabal-install
+   #    pkgs.sqlite
+   #    pkgs.python.pkgs.pip
+   #    pkgs.youtube-dl
+   #    pkgs.docker
+   #    pkgs.polybar
+   #    pkgs.php
+   #    pkgs.wireshark
+   #    pkgs.tex
+   #    pkgs.nmap
+   #    pkgs.polybar
+   #    pkgs.gcc
+   #    pkgs.colorls
+   #    pkgs.stdenv
+   #    pkgs.gnumake
+   #    ];
+   # };
+
+  #Packages
   environment.systemPackages = with pkgs;
     [
       neovim 
@@ -66,6 +118,7 @@ in
       zsh
       virtmanager
       qemu
+      # qemu-system-gui
       OVMF
       zathura
       libvirt
@@ -79,7 +132,6 @@ in
       krita
       gimp
       ghc
-      home-manager
       python
       discord
       cabal-install
@@ -161,7 +213,22 @@ in
   # Virtualizaiton configuration 
   virtualisation.libvirtd.enable = true;
   virtualisation.libvirtd.qemu.ovmf.enable = true;
-  programs.dconf.enable = true;
 
+  # virtualisation.libvirtd.qemu.verbatimConfig = ''
+  #       /dev/null 
+  #       /dev/full 
+  #       /dev/zero 
+  #       /dev/random
+  #       /dev/urandom 
+  #       /dev/ptmx 
+  #       /dev/kvm 
+  #       /dev/kqemu 
+  #       /dev/rtc
+  #       /dev/hpet
+  #       /dev/input/by-id/usb-Logitech_G403_Prodigy_Gaming_Mouse_108138673138-event-mouse 
+  #       /dev/input/by-id/usb-Logitech_G413_Carbon_Mechanical_Gaming_Keyboard_168137503432-event-kbd
+  #   '';
+    
+  programs.dconf.enable = true;
   system.stateVersion = "21.11"; # Nixos installation version
 }
